@@ -62,13 +62,13 @@ jobs:
         env:
           COMPOSER_AUTH_JSON: ${{ secrets.COMPOSER_AUTH_JSON }}
 
-      - name: "Cache dependencies"
-        uses: "actions/cache@v2"
-        with:
-          path: |
-            ~/.composer/cache
-            magento
-          key: "magento-2.4.6-with-php-${{ matrix.php-version }}"
+#      - name: "Cache dependencies"
+#        uses: "actions/cache@v2"
+#        with:
+#          path: |
+#            ~/.composer/cache
+#            magento
+#          key: "magento-2.4.6-with-php-${{ matrix.php-version }}"
 
       - name: "Create Magento 2.4.6 project"
         run: |
@@ -77,12 +77,12 @@ jobs:
 
       - name: "Add testing dependencies"
         run: |
+          composer config minimum-stability dev
           composer config --no-plugins allow-plugins.magento/* true
           composer config --no-plugins allow-plugins.php-http/discovery true
           composer config --no-plugins allow-plugins.laminas/laminas-dependency-plugin true
           composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
           composer require --no-progress behat/behat tkotosz/test-area-magento2
-          composer config minimum-stability dev
           composer install --no-progress
         working-directory: 'magento'
 
@@ -123,8 +123,7 @@ jobs:
 
       - name: "Install BehatMagento2 Extension"
         run: |
-          composer config minimum-stability dev
-          composer config repositories.behat-m2-extension path vendor/seec/behat-magento2-extension
+          composer config repositories.behat-magento2-extension path vendor/seec/behat-magento2-extension
           composer require seec/behat-magento2-extension:@dev
         working-directory: 'magento'
 
