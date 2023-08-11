@@ -82,6 +82,7 @@ jobs:
           composer config --no-plugins allow-plugins.laminas/laminas-dependency-plugin true
           composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
           composer require --no-progress behat/behat tkotosz/test-area-magento2
+          composer config minimum-stability dev
           composer install --no-progress
         working-directory: 'magento'
 
@@ -94,7 +95,6 @@ jobs:
         run: |
           rm -f app/etc/env.php
           mkdir -p pub/static pub/media
-          composer require --dev behat/behat tkotosz/test-area-magento2
           bin/magento setup:install \
             --admin-email="magento@magento.com" \
             --admin-firstname="admin" \
